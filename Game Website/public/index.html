@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Game Database — Games • Proxies • AIs • Staff</title>
+<meta name="description" content="Game Database: professional database for games, proxies, AI tools and staff." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="logo.png" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="bg-orbs"><span class="orb orb-1"></span><span class="orb orb-2"></span><span class="orb orb-3"></span></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <button class="logo" data-nav="home" aria-label="Game Database home">
+      <img class="logo-img" src="logo.png" alt="Game Database logo" onload="this.classList.add('ok')" onerror="this.remove()" />
+      <span class="logo-mark logo-fallback">G</span>
+      <span class="logo-text">Game<small>Database</small></span>
+      <span class="version-badge">v1.0 Pre Dev</span>
+    </button>
+
+    <nav class="tabs" id="mainTabs">
+      <button class="tab active" data-nav="home">◈ Dashboard</button>
+      <button class="tab" data-nav="games">🎮 Games</button>
+      <button class="tab" data-nav="proxies">🌐 Proxies</button>
+      <button class="tab" data-nav="ais">🤖 AIs</button>
+      <button class="tab" data-nav="staff">👥 Staff</button>
+      <button class="tab" data-nav="chat">💬 Chat</button>
+      <button class="tab" data-nav="staffchat">🛡️ Staff Chat</button>
+      <button class="tab" data-nav="updates">📰 Updates</button>
+      <button class="tab" data-nav="favorites">★ Saved <span class="pill" id="favCount">0</span></button>
+    </nav>
+
+    <div class="nav-actions">
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input id="globalSearch" type="search" placeholder="Search games, proxies, AIs, staff…" autocomplete="off" />
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      <button class="icon-btn mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">☰</button>
+    </div>
+  </div>
+  <div class="mobile-tabs" id="mobileTabs">
+    <button class="tab active" data-nav="home">◈ Dashboard</button>
+    <button class="tab" data-nav="games">🎮 Games</button>
+    <button class="tab" data-nav="proxies">🌐 Proxies</button>
+    <button class="tab" data-nav="ais">🤖 AIs</button>
+    <button class="tab" data-nav="staff">👥 Staff</button>
+    <button class="tab" data-nav="chat">💬 Chat</button>
+    <button class="tab" data-nav="staffchat">🛡️ Staff Chat</button>
+    <button class="tab" data-nav="updates">📰 Updates</button>
+    <button class="tab" data-nav="favorites">★ Saved</button>
+  </div>
+</header>
+
+<main id="app">
+  <!-- DASHBOARD -->
+  <section class="view active" id="view-home">
+    <div class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="dot"></span> LIVE DATABASE • <span id="eyebrowCount">READY FOR YOUR DATA</span></div>
+        <h1>One database for<br><span class="grad">Games, Proxies, AI & Staff.</span></h1>
+        <p>Browse a professional-grade catalog with powerful search, filters, detailed profiles, bookmarks and history — all in a fast dark interface.</p>
+        <div class="hero-btns">
+          <button class="btn primary" data-nav="games">Explore Games →</button>
+          <button class="btn ghost" data-nav="proxies">Check Proxies</button>
+          <button class="btn ghost" data-nav="ais">Discover AIs</button>
+          <button class="btn ghost" data-nav="staff">Meet Staff</button>
+        </div>
+        <div class="hero-stats">
+          <div class="hstat"><strong id="statGames">0</strong><span>Games</span></div>
+          <div class="hstat"><strong id="statProxies">0</strong><span>Proxies</span></div>
+          <div class="hstat"><strong id="statAIs">0</strong><span>AI Tools</span></div>
+          <div class="hstat"><strong id="statStaff">0</strong><span>Staff</span></div>
+          <div class="hstat"><strong id="statOnline">0%</strong><span>Proxy uptime avg</span></div>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <div class="panel-head"><span>● ● ●</span><em>system status</em></div>
+        <div class="status-row"><span>Games index</span><b class="ok">● synced</b></div>
+        <div class="status-row"><span>Proxy monitor</span><b class="ok" id="proxyStatusLine">● 8/10 online</b></div>
+        <div class="status-row"><span>AI catalog</span><b class="ok">● updated today</b></div>
+        <div class="status-row"><span>Staff directory</span><b class="ok" id="staffStatusLine">● 4 roles</b></div>
+        <div class="mini-chart" id="miniChart"></div>
+        <div class="panel-foot">Avg proxy latency <strong id="avgLatency">—</strong></div>
+      </div>
+    </div>
+
+    <div class="section-head"><h2>Trending now</h2><button class="link" data-nav="games">View all games →</button></div>
+    <div class="grid cards-3" id="trendingGames"></div>
+
+    <div class="two-col">
+      <div>
+        <div class="section-head"><h2>⚡ Fastest proxies</h2><button class="link" data-nav="proxies">View all →</button></div>
+        <div class="list" id="topProxies"></div>
+      </div>
+      <div>
+        <div class="section-head"><h2>🤖 Top rated AIs</h2><button class="link" data-nav="ais">View all →</button></div>
+        <div class="list" id="topAIs"></div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="section-head"><h2>👥 Staff</h2><button class="link" data-nav="staff">View team →</button></div>
+        <div class="list" id="teamPreview"></div>
+      </div>
+      <div>
+        <div class="section-head"><h2>🕘 Recently viewed</h2><button class="link" id="clearRecent">Clear</button></div>
+        <div class="list" id="recentList"></div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="section-head"><h2>★ Favorites</h2><button class="link" data-nav="favorites">Open saved →</button></div>
+        <div class="list" id="homeFavs"></div>
+      </div>
+      <div>
+        <div class="section-head"><h2>ℹ️ About this build</h2></div>
+        <div class="list"><div class="row" style="cursor:default"><div class="ic">🔖</div><div class="inf"><strong id="aboutVersion">v1.0 Pre Dev</strong><small>Early development build — data can be edited in app.js</small></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAMES -->
+  <section class="view" id="view-games">
+    <div class="page-head">
+      <div><h1>🎮 Games</h1><p id="gamesCount">Browse the full catalog</p></div>
+      <div class="controls">
+        <input id="gamesSearch" class="input" type="search" placeholder="Search title, genre, developer…" />
+        <select id="gamesGenre" class="input select"><option value="">All genres</option></select>
+        <select id="gamesPlatform" class="input select"><option value="">All platforms</option><option>PC</option><option>PlayStation 5</option><option>Xbox Series X</option><option>Switch</option><option>Mobile</option></select>
+        <select id="gamesSort" class="input select">
+          <option value="rating">Top rated</option>
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="az">A → Z</option>
+        </select>
+      </div>
+    </div>
+    <div class="chips" id="gamesGenreChips"></div>
+    <div class="grid cards-3" id="gamesGrid"></div>
+  </section>
+
+  <!-- PROXIES -->
+  <section class="view" id="view-proxies">
+    <div class="page-head">
+      <div><h1>🌐 Proxies</h1><p id="proxiesCount">Monitored proxy network</p></div>
+      <div class="controls">
+        <input id="proxiesSearch" class="input" type="search" placeholder="Search name, location, type…" />
+        <select id="proxiesType" class="input select"><option value="">All types</option><option>Residential</option><option>Datacenter</option><option>SOCKS5</option><option>HTTP</option><option>Mobile</option></select>
+        <select id="proxiesStatus" class="input select"><option value="">All status</option><option>Online</option><option>Degraded</option><option>Offline</option></select>
+        <select id="proxiesSort" class="input select">
+          <option value="fastest">Fastest</option>
+          <option value="uptime">Highest uptime</option>
+          <option value="az">A → Z</option>
+        </select>
+      </div>
+    </div>
+    <div class="proxy-banner">
+      <div><strong id="onlineCount">—</strong><span>online now</span></div>
+      <div><strong id="avgLatency2">—</strong><span>avg latency</span></div>
+      <div><strong id="eliteCount">—</strong><span>elite anonymity</span></div>
+      <div class="pulse"><span class="dot"></span> live monitoring</div>
+    </div>
+    <div class="grid cards-3" id="proxiesGrid"></div>
+  </section>
+
+  <!-- AIS -->
+  <section class="view" id="view-ais">
+    <div class="page-head">
+      <div><h1>🤖 AIs</h1><p id="aisCount">AI tools & services</p></div>
+      <div class="controls">
+        <input id="aisSearch" class="input" type="search" placeholder="Search name, category, feature…" />
+        <select id="aisCategory" class="input select"><option value="">All categories</option></select>
+        <select id="aisPricing" class="input select"><option value="">All pricing</option><option>Free</option><option>Freemium</option><option>Paid</option><option>Enterprise</option></select>
+        <select id="aisSort" class="input select">
+          <option value="rating">Top rated</option>
+          <option value="az">A → Z</option>
+        </select>
+      </div>
+    </div>
+    <div class="chips" id="aisCategoryChips"></div>
+    <div class="grid cards-3" id="aisGrid"></div>
+  </section>
+
+  <!-- STAFF -->
+  <section class="view" id="view-staff">
+    <div class="page-head">
+      <div><h1>👥 Staff</h1><p id="staffCount">Team directory</p></div>
+      <div class="controls">
+        <input id="staffSearch" class="input" type="search" placeholder="Search name, role…" />
+        <select id="staffRole" class="input select"><option value="">All roles</option><option>Owner</option><option>Co-Owner</option><option>Admin</option><option>Developer</option><option>Helper</option></select>
+        <select id="staffSort" class="input select">
+          <option value="role">By rank</option>
+          <option value="az">A → Z</option>
+        </select>
+      </div>
+    </div>
+    <div class="chips" id="staffRoleChips">
+      <button class="chip active" data-r="all">All</button>
+      <button class="chip" data-r="Owner">👑 Owner</button>
+      <button class="chip" data-r="Co-Owner">👑 Co-Owner</button>
+      <button class="chip" data-r="Admin">🛡️ Admin</button>
+      <button class="chip" data-r="Developer">💻 Developer</button>
+      <button class="chip" data-r="Helper">🤝 Helper</button>
+    </div>
+    <div class="grid cards-3" id="staffGrid"></div>
+  </section>
+
+  <!-- CHAT -->
+  <section class="view" id="view-chat">
+    <div class="page-head">
+      <div><h1>💬 Public Chat</h1><p id="chatCount">Community chat • auto-moderated</p><span class="net-pill" id="netStatus">Offline mode</span></div>
+      <button class="btn ghost" id="clearChat">Clear chat</button>
+    </div>
+    <div class="chat-rules">🛡️ Auto-mod is on — swearing, links/invites, spam & flooding, ALL CAPS, letter-spam and personal info (long numbers) are blocked. You must link your email to chat — your display name is read from it, so nobody can impersonate you. Staff moderators can time out or remove rule-breakers. 3-second slowmode is on (staff exempt).</div>
+    <div class="identity-bar" id="identityBar"></div>
+    <div class="chat-box">
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-warn" id="chatWarn"></div>
+      <div class="chat-input-row">
+        <input id="chatText" class="input" maxlength="300" placeholder="Type a message… (Enter to send)" autocomplete="off" />
+        <button class="btn primary" id="chatSend">Send</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAFF CHAT -->
+  <section class="view" id="view-staffchat">
+    <div class="page-head">
+      <div><h1>🛡️ Staff Chat</h1><p id="staffChatCount">Private channel • password required</p><span class="net-pill" id="staffNetStatus">Offline mode</span></div>
+      <div class="controls">
+        <button class="btn ghost" id="lockStaffBtn">Lock</button>
+        <button class="btn ghost" id="clearStaffChat">Clear chat</button>
+      </div>
+    </div>
+    <div id="staffLock">
+      <div class="lock-box">
+        <div class="lock-ic">🔒</div>
+        <h3>Staff only</h3>
+        <p>Enter the staff password to unlock this channel.</p>
+        <div class="lock-row">
+          <input id="staffPass" class="input" type="password" placeholder="Staff password" autocomplete="off" />
+          <button class="btn primary" id="unlockBtn">Unlock</button>
+        </div>
+      </div>
+    </div>
+    <div id="staffRoomWrap" style="display:none">
+      <div class="chat-rules">Same auto-mod and email-identity rules as public chat. 3-second slowmode is on (staff exempt).</div>
+      <div class="chat-box">
+        <div class="chat-messages" id="staffMessages"></div>
+        <div class="chat-warn" id="staffWarn"></div>
+        <div class="chat-input-row">
+          <input id="staffText" class="input" maxlength="300" placeholder="Type a message... (Enter to send)" autocomplete="off" />
+          <button class="btn primary" id="staffSend">Send</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UPDATES -->
+  <section class="view" id="view-updates">
+    <div class="page-head">
+      <div><h1>📰 Updates</h1><p id="updatesCount">Changelog — newest first</p></div>
+    </div>
+    <div class="updates-list" id="updatesList"></div>
+  </section>
+
+  <!-- FAVORITES -->
+  <section class="view" id="view-favorites">
+    <div class="page-head">
+      <div><h1>★ Saved items</h1><p>Your bookmarks, stored locally in this browser.</p></div>
+      <button class="btn ghost" id="clearFavs">Clear all</button>
+    </div>
+    <div class="grid cards-3" id="favsGrid"></div>
+  </section>
+
+  <!-- DETAIL -->
+  <section class="view" id="view-detail">
+    <button class="btn ghost back-btn" id="backBtn">← Back</button>
+    <div id="detailContent"></div>
+  </section>
+
+  <div class="loader" id="loader"><div class="spinner"></div><p>Loading database…</p></div>
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <div><strong>GameDatabase</strong><span>Professional catalog for games, proxies, AI & staff — add your entries in app.js. • <span id="footVersion">v1.0 Pre Dev</span></span></div>
+    <div class="foot-links"><button data-nav="games">Games</button><button data-nav="proxies">Proxies</button><button data-nav="ais">AIs</button><button data-nav="staff">Staff</button><button data-nav="chat">Chat</button><button data-nav="staffchat">Staff Chat</button><button data-nav="updates">Updates</button></div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
